@@ -1,0 +1,117 @@
+<view class="container" >
+  <!-- bar -->
+  <view class="bar">
+    <view class="time vertical-center">
+      <view class="time-text">时间</view>
+      <view class="left-time">{{leftTime}}</view>
+    </view>
+    <view class="game-state vertical-center">{{gameState}}</view>
+    <view class="quit-game vertical-center" bindtap='quitGame'>退出游戏</view>
+  </view>
+
+  <!-- 画布 -->
+  <view class="canvas-area">
+    <!-- 同一页面中的 canvas-id 不可重复 -->
+    <!-- 如果使用一个已经出现过的 canvas-id -->
+    <!-- 该 canvas 标签对应的画布将被隐藏并不再正常工作 -->
+    <canvas
+        class="canvas"
+        canvas-id="myCanvas" 
+        disable-scroll="false"
+        bindtouchstart="touchStart"
+        bindtouchmove="touchMove"
+        bindtouchend="touchEnd">
+    </canvas>
+
+    <!-- 画布工具 -->
+    <view class="tools draw-tools" wx:if="{{myTurn}}" >
+      <slider 
+        class="slider"
+        wx:if="{{isPenSelecting}}" 
+        bindchange="penSizeChanged"
+        backgroundColor='wheat'
+        selected-color='#FFD700'
+        block-size='14'
+        min="1"
+        max="10"
+        step="1"
+        value='3'
+        show-value>
+      </slider>
+      <view class="box penSelector" bindtap="penSelect"></view>
+      <view class="box eraser" bindtap="clearCanvas"></view>
+      <view wx:for="{{colors}}" wx:key="colorName" 
+            class="box" style='background-color:{{item.value}}' 
+            bindtap="colorSelect" data-param="{{item.value}}"></view>
+    </view>
+
+    <!-- 评论工具 -->
+    <view class="tools comment-tools" wx:if="{{!myTurn}}">
+        <view>提示：{{hint}}个字，{{hint_category}}</view>
+    </view>
+  </view>
+
+  <!-- 讨论 -->
+  <view class='chat'>
+    <view class='head-portrait'>
+      <image 
+        class='head'
+        src='{{gamers[0].img}}'
+        mode='aspectFit'></image>
+        <text wx:if='{{showNickName}}' class='nickName'>{{gamers[0].nickName}}</text>
+      <image 
+        class='head' 
+        src='{{gamers[1].img}}'
+        mode='aspectFit'></image>
+        <text wx:if='{{showNickName}}' class='nickName'>{{gamers[1].nickName}}</text>
+      <image 
+      class='head' 
+      src='{{gamers[2].img}}'
+      mode='aspectFit'></image>
+      <text wx:if='{{showNickName}}' class='nickName'>{{gamers[2].nickName}}</text>
+    </view>
+    <!-- 聊天内容 -->
+    <view class='chat-content'>
+      <text >{{chatContent}}</text>
+    </view>
+    <view class='head-portrait'>
+      <image 
+        class='head'
+        src='{{gamers[0].img}}'
+        mode='aspectFit'></image>
+        <text wx:if='{{showNickName}}' class='nickName'>{{gamers[0].nickName}}</text>
+      <image 
+        class='head' 
+        src='{{gamers[1].img}}'
+        mode='aspectFit'></image>
+        <text wx:if='{{showNickName}}' class='nickName'>{{gamers[1].nickName}}</text>
+      <image 
+      class='head' 
+      src='{{gamers[2].img}}'
+      mode='aspectFit'></image>
+      <text wx:if='{{showNickName}}' class='nickName'>{{gamers[2].nickName}}</text>
+    </view>
+  </view>
+
+  <!-- 输入答案 -->
+   <view class='input'>
+    <input class='input-text'
+      placeholder='{{placeholder}}'
+      maxlength='12'
+      bindfocus='onFocus'
+      bindblur='onblur'
+      bindinput='onInput'
+      value='{{inputValue}}'
+    >
+    </input>
+    <view class='submit'>
+      <button
+        size='mini'
+        class='submit-button'
+        bindtap='onSubmit'
+      >
+        提交
+      </button>
+    </view>
+  </view> 
+</view>
